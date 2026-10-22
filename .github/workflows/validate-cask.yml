@@ -15,6 +15,9 @@ jobs:
   validate-cask:
     name: validate-cask
     runs-on: macos-latest
+    defaults:
+      run:
+        shell: bash
 
     steps:
       - name: Checkout
@@ -39,5 +42,14 @@ jobs:
       - name: Trust local tap
         run: brew trust jansim/tools
 
-      - name: Check Homebrew can load the tap
-        run: brew readall jansim/tools
+      # readall exits 0 when a cask uses deprecated DSL, so fail on any warning.
+      - name: Check Homebrew can load the tap without warnings
+        run: |
+          brew readall jansim/tools 2>&1 | tee "$RUNNER_TEMP/readall.log"
+          if grep -qE '^(::warning|Warning:)' "$RUNNER_TEMP/readall.log"; then
+            echo "::error::brew readall emitted warnings"
+            exit 1
+          fi
+
+      - name: Check Homebrew style
+        run: brew style jansim/tools
