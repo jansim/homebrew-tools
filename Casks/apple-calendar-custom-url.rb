@@ -1,8 +1,8 @@
 # The cask for the jansim/homebrew-tools tap, which serves it as
-# `brew install --cask jansim/tools/custom-calendar-url`.
+# `brew install --cask jansim/tools/apple-calendar-custom-url`.
 # It always installs the latest GitHub release, so it needs no update per
 # release; `brew upgrade --greedy` picks up new ones.
-cask "custom-calendar-url" do
+cask "apple-calendar-custom-url" do
   version :latest
   sha256 :no_check
 
