@@ -11,17 +11,19 @@ cask "smol-pdf" do
   desc "PDF compressor"
   homepage "https://github.com/jansim/smol-pdf"
 
-  depends_on macos: ">= :sonoma"
+  depends_on macos: :sonoma
 
   app "smol-pdf.app"
   binary "#{appdir}/smol-pdf.app/Contents/Resources/smolpdf"
 
   # The app is only ad-hoc signed, not notarized, so Gatekeeper would refuse
   # to open it, and the command-line tool inside it, while they carry the
-  # quarantine flag.
-  postflight do
-    system_command "/usr/bin/xattr",
-                   args: ["-dr", "com.apple.quarantine", "#{appdir}/smol-pdf.app"]
+  # quarantine flag. If this fails, the app is still installed and opens with
+  # "Open Anyway" in System Settings.
+  postflight_steps do
+    run "/usr/bin/xattr",
+        args:         ["-dr", "com.apple.quarantine", "{{appdir}}/smol-pdf.app"],
+        must_succeed: false
   end
 
   zap trash: [

@@ -13,15 +13,17 @@ cask "doctopus" do
 
   # Releases are built for Apple silicon only.
   depends_on arch: :arm64
-  depends_on macos: ">= :sequoia"
+  depends_on macos: :sequoia
 
   app "Doctopus.app"
 
   # The app is only ad-hoc signed, not notarized, so Gatekeeper would refuse
-  # to open it while it carries the quarantine flag.
-  postflight do
-    system_command "/usr/bin/xattr",
-                   args: ["-dr", "com.apple.quarantine", "#{appdir}/Doctopus.app"]
+  # to open it while it carries the quarantine flag. If this fails, the app is
+  # still installed and opens with "Open Anyway" in System Settings.
+  postflight_steps do
+    run "/usr/bin/xattr",
+        args:         ["-dr", "com.apple.quarantine", "{{appdir}}/Doctopus.app"],
+        must_succeed: false
   end
 
   # Libraries stay: each is a `*.doctopus` package inside the folder it indexes.
