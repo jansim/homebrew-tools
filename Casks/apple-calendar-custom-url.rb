@@ -6,11 +6,7 @@ cask "apple-calendar-custom-url" do
   version :latest
   sha256 :no_check
 
-  # Cask/Url exempts release assets only under releases/download, not the
-  # releases/latest/download alias.
-  # rubocop:disable Cask/Url
   url "https://github.com/jansim/apple-calendar-custom-url/releases/latest/download/CustomCalendarURL.zip"
-  # rubocop:enable Cask/Url
   name "Custom Calendar URL"
   desc "Adds your own meeting links to Apple Calendar's video call options"
   homepage "https://github.com/jansim/apple-calendar-custom-url"

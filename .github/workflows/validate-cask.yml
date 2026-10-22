@@ -51,5 +51,8 @@ jobs:
             exit 1
           fi
 
+      # Cask/Url exempts GitHub release assets under releases/download but not
+      # the releases/latest/download alias the cask uses, and brew style
+      # rejects rubocop:disable comments, so skip that cop here.
       - name: Check Homebrew style
-        run: brew style jansim/tools
+        run: brew style --except-cops Cask/Url jansim/tools
