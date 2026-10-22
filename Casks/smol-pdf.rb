@@ -18,12 +18,9 @@ cask "smol-pdf" do
 
   # The app is only ad-hoc signed, not notarized, so Gatekeeper would refuse
   # to open it, and the command-line tool inside it, while they carry the
-  # quarantine flag. If this fails, the app is still installed and opens with
-  # "Open Anyway" in System Settings.
+  # quarantine flag.
   postflight_steps do
-    run "/usr/bin/xattr",
-        args:         ["-dr", "com.apple.quarantine", "{{appdir}}/smol-pdf.app"],
-        must_succeed: false
+    run "/usr/bin/xattr", args: ["-dr", "com.apple.quarantine", "{{appdir}}/smol-pdf.app"]
   end
 
   zap trash: [

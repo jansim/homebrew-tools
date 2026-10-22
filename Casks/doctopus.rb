@@ -18,12 +18,9 @@ cask "doctopus" do
   app "Doctopus.app"
 
   # The app is only ad-hoc signed, not notarized, so Gatekeeper would refuse
-  # to open it while it carries the quarantine flag. If this fails, the app is
-  # still installed and opens with "Open Anyway" in System Settings.
+  # to open it while it carries the quarantine flag.
   postflight_steps do
-    run "/usr/bin/xattr",
-        args:         ["-dr", "com.apple.quarantine", "{{appdir}}/Doctopus.app"],
-        must_succeed: false
+    run "/usr/bin/xattr", args: ["-dr", "com.apple.quarantine", "{{appdir}}/Doctopus.app"]
   end
 
   # Libraries stay: each is a `*.doctopus` package inside the folder it indexes.
